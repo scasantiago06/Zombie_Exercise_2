@@ -4,30 +4,9 @@ using UnityEngine;
 
 public class Zombie : MonoBehaviour                                                                               //La clase "Zombie" que contiene unas variables y el constructor.
 {
-    public struct ZombieStruct
-    {
-        public WaitForSeconds timeBehaviourChange;
-        public int randomPart;
-        public int randomColor;
-        public int randomBehaviour;
-        public Color zombieColor;
-        public Zombiebehaviour zombieBehaviour;
-        public BodyPart bodyPart;
-    }
-
-    public enum Zombiebehaviour
-    {
-        Idle, Moving
-    }
-
-    public enum BodyPart
-    {
-        Brain, Eyes, Legs, Fingers, neck, length
-    }
-
     public ZombieStruct zombieStruct;
 
-    private void Start()
+    void Start()
     {
         gameObject.name = "Zombie";
         gameObject.tag = "Zombie";
@@ -38,6 +17,33 @@ public class Zombie : MonoBehaviour                                             
         zombieStruct.bodyPart = (BodyPart)zombieStruct.randomPart;
         ChangeColor(zombieStruct);
         StartCoroutine("ChangeBehaviour", zombieStruct);
+    }
+
+    void Update()
+    {
+        switch (zombieStruct.zombieBehaviour)
+        {
+            case Zombiebehaviour.Idle:
+                transform.position = transform.position;
+                break;
+            case Zombiebehaviour.Moving:
+                switch (zombieStruct.randomDirection)
+                {
+                    case 0:
+                        transform.position += (transform.forward * 1f) * Time.deltaTime;
+                        break;
+                    case 1:
+                        transform.position -= (transform.forward * 1f) * Time.deltaTime;
+                        break;
+                    case 2:
+                        transform.position += (transform.right * 1f) * Time.deltaTime;
+                        break;
+                    case 3:
+                        transform.position -= (transform.right * 1f) * Time.deltaTime;
+                        break;
+                }
+                break;
+        }    
     }
 
     void ChangeColor(ZombieStruct zom)
@@ -56,20 +62,39 @@ public class Zombie : MonoBehaviour                                             
         }
     }
 
-    IEnumerator ChangeBehaviour(ZombieStruct zom)
+    void ChooseBehaviour()
     {
-        zom.randomBehaviour = Random.Range(0, 2);
-        zom.zombieBehaviour = (Zombiebehaviour)zom.randomBehaviour;
-  
-        if (zom.zombieBehaviour == Zombiebehaviour.Idle)
-        {
-            print("Quieto");
-        }
-        else if (zom.zombieBehaviour == Zombiebehaviour.Moving)
-        {
-            print("Me muevo");
-        }
-        yield return zom.timeBehaviourChange;
-        StartCoroutine("ChangeBehaviour", zom);
+        zombieStruct.randomDirection = Random.Range(0, 4);
+        zombieStruct.randomBehaviour = Random.Range(0, 2);
+        zombieStruct.zombieBehaviour = (Zombiebehaviour)zombieStruct.randomBehaviour;
     }
+
+    IEnumerator ChangeBehaviour()
+    {
+        ChooseBehaviour();
+        yield return zombieStruct.timeBehaviourChange;
+        StartCoroutine("ChangeBehaviour");
+    }
+}
+
+public struct ZombieStruct
+{
+    public WaitForSeconds timeBehaviourChange;
+    public int randomPart;
+    public int randomColor;
+    public int randomBehaviour;
+    public int randomDirection;
+    public Color zombieColor;
+    public Zombiebehaviour zombieBehaviour;
+    public BodyPart bodyPart;
+}
+
+public enum Zombiebehaviour
+{
+    Idle, Moving
+}
+
+public enum BodyPart
+{
+    Brain, Eyes, Legs, Fingers, neck, length
 }
