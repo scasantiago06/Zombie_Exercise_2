@@ -2,32 +2,53 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Zombie : MonoBehaviour                                                                               //La clase "Zombie" que contiene unas variables y el constructor.
+public struct ZombieStruct                                                                                      //Creo la estructura para almacenar las variables del Zombie.
 {
-    public ZombieStruct zombieStruct;
+    public WaitForSeconds timeBehaviourChange;                                                                  //Creo una variable de tipo "WaitForSeconds" para utilizarlo en la corrutina como el tiempo de espera.
+    public int randomColor;                                                                                     //Creo una variable de tipo "int" para determinar según el número, que color será asignado.
+    public int randomDirection;                                                                                 //Creo una variable de tipo "int" para determinar según el número que dirección tendrá el zombie.
+    public Zombiebehaviour zombieBehaviour;
+    public BodyPart bodyPart;
+}
 
+public enum Zombiebehaviour
+{
+    Idle, Moving
+}
+
+public enum BodyPart
+{
+    Brain, Eyes, Legs, Fingers, neck
+}
+
+public class Zombie : MonoBehaviour                                                                              
+{
+    public ZombieStruct zombieStruct_Z;
+
+    /********************************************************************************************************************************Funcion "Start"********************************************************************************************************************************/
     void Start()
     {
         gameObject.name = "Zombie";
         gameObject.tag = "Zombie";
 
-        zombieStruct.timeBehaviourChange = new WaitForSeconds(5f);
-        zombieStruct.randomColor = Random.Range(0, 3);
-        zombieStruct.randomPart = Random.Range(0,(int)BodyPart.length);
-        zombieStruct.bodyPart = (BodyPart)zombieStruct.randomPart;
-        ChangeColor(zombieStruct);
-        StartCoroutine("ChangeBehaviour", zombieStruct);
+        zombieStruct_Z.timeBehaviourChange = new WaitForSeconds(5f);
+        zombieStruct_Z.randomColor = Random.Range(0, 3);
+        zombieStruct_Z.bodyPart = (BodyPart)Random.Range(0, 5);
+        ChangeColor();
+        StartCoroutine("ChangeBehaviour", zombieStruct_Z);
     }
 
+    /*******************************************************************************************************************************Funcion "Update"*******************************************************************************************************************************/
     void Update()
     {
-        switch (zombieStruct.zombieBehaviour)
+        switch (zombieStruct_Z.zombieBehaviour)
         {
             case Zombiebehaviour.Idle:
                 transform.position = transform.position;
                 break;
+
             case Zombiebehaviour.Moving:
-                switch (zombieStruct.randomDirection)
+                switch (zombieStruct_Z.randomDirection)
                 {
                     case 0:
                         transform.position += (transform.forward * 1f) * Time.deltaTime;
@@ -46,9 +67,10 @@ public class Zombie : MonoBehaviour                                             
         }    
     }
 
-    void ChangeColor(ZombieStruct zom)
+    /****************************************************************************************************************************Funcion "ChageColor"****************************************************************************************************************************/
+    void ChangeColor()
     {
-        switch (zom.randomColor)
+        switch (zombieStruct_Z.randomColor)
         {
             case 0:
                 gameObject.GetComponent<Renderer>().material.color = Color.cyan;
@@ -62,39 +84,23 @@ public class Zombie : MonoBehaviour                                             
         }
     }
 
+    /*************************************************************************************************************************Funcion "ChooseBehaviour"*************************************************************************************************************************/
     void ChooseBehaviour()
     {
-        zombieStruct.randomDirection = Random.Range(0, 4);
-        zombieStruct.randomBehaviour = Random.Range(0, 2);
-        zombieStruct.zombieBehaviour = (Zombiebehaviour)zombieStruct.randomBehaviour;
+        zombieStruct_Z.randomDirection = Random.Range(0, 4);
+        zombieStruct_Z.zombieBehaviour = (Zombiebehaviour)Random.Range(0, 2);
     }
 
+    public ZombieStruct ZombieMessage()
+    {
+        return zombieStruct_Z;
+    }
+
+    /************************************************************************************************************************Corrutina "ChangeBehaviour"************************************************************************************************************************/
     IEnumerator ChangeBehaviour()
     {
         ChooseBehaviour();
-        yield return zombieStruct.timeBehaviourChange;
+        yield return zombieStruct_Z.timeBehaviourChange;
         StartCoroutine("ChangeBehaviour");
     }
-}
-
-public struct ZombieStruct
-{
-    public WaitForSeconds timeBehaviourChange;
-    public int randomPart;
-    public int randomColor;
-    public int randomBehaviour;
-    public int randomDirection;
-    public Color zombieColor;
-    public Zombiebehaviour zombieBehaviour;
-    public BodyPart bodyPart;
-}
-
-public enum Zombiebehaviour
-{
-    Idle, Moving
-}
-
-public enum BodyPart
-{
-    Brain, Eyes, Legs, Fingers, neck, length
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FPSMove : MonoBehaviour                            //Creo la clase para hacer mover el personaje.
 {
-    public float speed;
+    public float speed;                                         //Creo una variable de tipo "float" que será la velocidad.
 
     void Update ()                                              //El "Update" se utiliza para comprobar la presión de botones.
     {
