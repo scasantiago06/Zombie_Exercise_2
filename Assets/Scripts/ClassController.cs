@@ -45,7 +45,6 @@ public class ClassController : MonoBehaviour                                    
             else if (randomComponent == 2)
             {
                 go.AddComponent<Citizen>();
-                go.name = "Citizen";
             }
         }
     }

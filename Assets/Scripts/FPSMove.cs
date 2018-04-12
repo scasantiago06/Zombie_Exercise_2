@@ -5,9 +5,9 @@ using UnityEngine;
 public class FPSMove : MonoBehaviour                            //Creo la clase para hacer mover el personaje.
 {
     public float speed;
+
     void Update ()                                              //El "Update" se utiliza para comprobar la presión de botones.
     {
-        print(speed);
         if (Input.GetKey(KeyCode.W))                            //Si se presiona la tecla "W" pasa lo siguiente.
         {
             transform.position += transform.forward * speed;    //Se le agrega velocidad al "transform" hacia el frente.

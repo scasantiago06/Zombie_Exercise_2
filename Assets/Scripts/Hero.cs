@@ -12,19 +12,20 @@ public class Hero : MonoBehaviour
     }
 
     public HeroStruct heroStruct;
-    ZombieStruct zombieStruct;
+    public ZombieStruct zombieStruct_H;
+    public CitizenStruct citizenStruct_H;
 
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Zombie"))
         {
-            zombieStruct.randomPart = Random.Range(0, (int)BodyPart.length);
-            zombieStruct.bodyPart = (BodyPart)zombieStruct.randomPart;
-            print("Waaaarrrr i want to eat " + zombieStruct.bodyPart);
+            zombieStruct_H.randomPart = Random.Range(0, (int)BodyPart.length);
+            zombieStruct_H.bodyPart = (BodyPart)zombieStruct_H.randomPart;
+            print("Waaaarrrr i want to eat " + zombieStruct_H.bodyPart);
         }
         if (collision.gameObject.CompareTag("Citizen"))
         {
-
+            print("Hello, i am " + citizenStruct_H.randomName + " and i am " + citizenStruct_H.age + " years old.");
         }
     }
 
