@@ -28,7 +28,7 @@ public class Hero : MonoBehaviour                                               
         if (collision.gameObject.GetComponent<Citizen>())                                                                                       //Verifico con el condicional si el objeto que tiene este script esta chocando con algún otro que tenga el componente de "Citizen".
         {
             citizenStruct_H = collision.gameObject.GetComponent<Citizen>().CitizenMessage();                                                    //En resumen, "citizenStruct_H" es igual a la función "CitizenMessage()" ubicada en la clase "Citizen" y, esta función retorna la estructura local de dicha clase, por lo tanto, "CitizenStruct_H" será igual a "CitizenStruct_C".
-            print("Hello, i am " + citizenStruct_H.randomName + " and i am " + citizenStruct_H.age + " years old");                             //Ahora imprimo lo que aparece entre comillas más "CitizenStruct_H.bodyPart", es decir, "CitizenStruct_H" se acabó de sobrescribir por "CitizenStruct_Z" y luego accedimos a la variable "randomName" de la estructura, y lo mismo con "citizenStruct.age"
+            print("Hello, i am " + citizenStruct_H.names + " and i am " + citizenStruct_H.age + " years old");                             //Ahora imprimo lo que aparece entre comillas más "CitizenStruct_H.bodyPart", es decir, "CitizenStruct_H" se acabó de sobrescribir por "CitizenStruct_Z" y luego accedimos a la variable "randomName" de la estructura, y lo mismo con "citizenStruct.age"
         }
     }
 
